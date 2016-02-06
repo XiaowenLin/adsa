@@ -48,3 +48,9 @@ for(cityName in c("Charlotte","Madison","Tempe","Henderson","Las Vegas")){
 	print(p)
 	dev.off()
 }
+
+
+# ikm0UCahtK34LbLCEw4YTw has been the most cities
+
+by_city_summarise <- group_by(by_city,user_id)
+

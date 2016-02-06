@@ -53,7 +53,41 @@ userSub.to_sql("userSub",SQL_engine,flavor="mysql",if_exists="replace",index=Tru
 
 res = pd.merge(reviewsSub,businessSub,how="left",on="business_id")
 
-res2 = res.groupby(['user_id',"city"]).count()
-res3 = res2["review_id"]
+res_groupby=res.groupby(["user_id"])
+
+fitered_in_LV=res_groupby.filter(lambda x: (x["city"]=="Las Vegas").any())
+fitered_notBeen_LV=res_groupby.filter(lambda x: (x["city"]!="Las Vegas").all())
+
+categories=fitered_notBeen_LV["categories"]
+
+def mapCategories(x):
+	x=x.lower()
+	# print x
+	if "medical" in x or "hospital" in x or "health" in x or "doctor" in x:
+		return "hospital"
+	elif "food" in x or "restaurant"in x:
+		return "food"
+	elif "estate" in x:
+		return "estate"
+	else:
+		return "other"
+
+simpleCategories=categories.map(mapCategories)
+simpleCategories2=fitered_in_LV["categories"].map(mapCategories)
+
+# fitered_been_LV.agg({
+	# 'f1': lambda:
+	# 'f2':
+	# })
+# res2 = res.groupby(['user_id',"city"]).count()
+# res3 = res2["review_id"]
+
+# res2=res.groupby(['user_id'])
+# 
+# res2["city"]
+
+
+
+
 
 
